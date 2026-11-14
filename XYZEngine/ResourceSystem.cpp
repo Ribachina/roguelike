@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ResourceSystem.h"
+#include <iostream>
 
 namespace XYZEngine
 {
@@ -113,10 +114,100 @@ namespace XYZEngine
 		textureMaps.erase(textureMap);
 	}
 
+	void ResourceSystem::LoadSoundBuffer(const std::string& name, std::string sourcePath)
+	{
+		if (soundBuffers.find(name) != soundBuffers.end())
+		{
+			return;
+		}
+
+		sf::SoundBuffer* newSoundBuffer = new sf::SoundBuffer();
+		if (newSoundBuffer->loadFromFile(sourcePath))
+		{
+			soundBuffers.emplace(name, newSoundBuffer);
+		}
+		else
+		{
+			delete newSoundBuffer;
+		}
+	}
+	const sf::SoundBuffer* ResourceSystem::GetSoundBufferShared(const std::string& name) const
+	{
+		auto soundBuffer = soundBuffers.find(name);
+
+		if (soundBuffer == soundBuffers.end())
+		{
+			return nullptr;
+		}
+		
+		return soundBuffer->second;
+	}
+	sf::SoundBuffer* ResourceSystem::GetSoundBufferCopy(const std::string& name) const
+	{
+		return new sf::SoundBuffer(*soundBuffers.find(name)->second);
+	}
+	void ResourceSystem::DeleteSharedSoundBuffer(const std::string& name)
+	{
+		auto soundBuffer = soundBuffers.find(name);
+
+		if (soundBuffer == soundBuffers.end())
+		{
+			return;
+		}
+
+		sf::SoundBuffer* deletingSoundBuffer = soundBuffer->second;
+		soundBuffers.erase(soundBuffer);
+		delete deletingSoundBuffer;
+	}
+
+	void ResourceSystem::LoadMusic(const std::string& name, const std::string& sourcePath)
+	{
+		if (musics.find(name) != musics.end())
+		{
+			return;
+		}
+
+		sf::Music* newMusic = new sf::Music();
+		if (newMusic->openFromFile(sourcePath))
+		{
+			musics.emplace(name, newMusic);
+		}
+		else
+		{
+			delete newMusic;
+		}
+	}
+	sf::Music* ResourceSystem::GetMusic(const std::string& name)
+	{
+		auto music = musics.find(name);
+
+		if (music == musics.end())
+		{
+			return nullptr;
+		}
+
+		return music->second;
+	}
+	void ResourceSystem::DeleteMusic(const std::string& name)
+	{
+		auto music = musics.find(name);
+
+		if (music == musics.end())
+		{
+			return;
+		}
+
+		sf::Music* deleteMusic = music->second;
+		musics.erase(music);
+		delete deleteMusic;
+	}
+
 	void ResourceSystem::Clear()
 	{
 		DeleteAllTextures();
 		DeleteAllTextureMaps();
+		DeleteAllSoundBuffers();
+		DeleteAllMusic();
 	}
 
 	void ResourceSystem::DeleteAllTextures()
@@ -145,6 +236,34 @@ namespace XYZEngine
 		for (const auto& key : keysToDelete)
 		{
 			DeleteSharedTextureMap(key);
+		}
+	}
+	void ResourceSystem::DeleteAllSoundBuffers()
+	{
+		std::vector<std::string> keysToDelete;
+
+		for (const auto& soundBuffer : soundBuffers)
+		{
+			keysToDelete.push_back(soundBuffer.first);
+		}
+
+		for (const auto& key : keysToDelete)
+		{
+			DeleteSharedSoundBuffer(key);
+		}
+	}
+	void ResourceSystem::DeleteAllMusic()
+	{
+		std::vector<std::string> keysToDelete;
+
+		for (const auto& music : musics)
+		{
+			keysToDelete.push_back(music.first);
+		}
+
+		for (const auto& key : keysToDelete)
+		{
+			DeleteMusic(key);
 		}
 	}
 }

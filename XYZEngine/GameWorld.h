@@ -21,6 +21,8 @@ namespace XYZEngine
 		void Clear();
 
 		void Print() const;
+
+		GameObject* FindGameObject(const std::string& name) const; // Метод ищет объекты в игре по имени
 	private:
 		GameWorld() {}
 		~GameWorld() {}

@@ -89,6 +89,9 @@
     <OutDir>$(ProjectDir)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -125,6 +128,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)XYZEngine;$(SolutionDir)\SFML\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>true</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +138,7 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>/VERBOSE:LIB %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,13 +170,21 @@
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="DeveloperLevel.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyChaseComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameResources.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateData.cpp" />
     <ClCompile Include="GameStateGameWin.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
+    <ClCompile Include="MainMenuComponent.cpp" />
+    <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControllerComponent.cpp" />
+    <ClCompile Include="PlayerSearchComponent.cpp" />
+    <ClCompile Include="RatEnemy.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -183,6 +196,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="ThreeHitBlock.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -191,7 +205,10 @@
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="Bonus.h" />
     <ClInclude Include="DeveloperLevel.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyChaseComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameResources.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateData.h" />
     <ClInclude Include="GameStateGameWin.h" />
@@ -199,9 +216,14 @@
     <ClInclude Include="IDelayedAction.h" />
     <ClInclude Include="IObserver.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="MainMenuComponent.h" />
+    <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControllerComponent.h" />
+    <ClInclude Include="PlayerSearchComponent.h" />
     <ClInclude Include="randomizer.h" />
+    <ClInclude Include="RatEnemy.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameSettings.h" />
@@ -214,6 +236,7 @@
     <ClInclude Include="Text.h" />
     <ClInclude Include="ThreeHitBlock.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XYZEngine\XYZEngine.vcxproj">

@@ -1,6 +1,8 @@
 #include "Player.h"
 #include <ResourceSystem.h>
 #include <SpriteColliderComponent.h>
+#include "AudioComponent.h"
+#include "PlayerControllerComponent.h"
 
 namespace XYZRoguelike
 {
@@ -23,6 +25,10 @@ namespace XYZRoguelike
 		auto body = gameObject->AddComponent<XYZEngine::RigidbodyComponent>();
 
 		auto collider = gameObject->AddComponent<XYZEngine::SpriteColliderComponent>();
+
+		auto playerAudio = gameObject->AddComponent<XYZEngine::AudioComponent>();
+
+		gameObject->AddComponent<PlayerControllerComponent>();
 	}
 
 	XYZEngine::GameObject* Player::GetGameObject()

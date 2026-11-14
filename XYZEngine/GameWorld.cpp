@@ -89,6 +89,19 @@ namespace XYZEngine
 		}
 	}
 
+	GameObject* GameWorld::FindGameObject(const std::string& name) const
+	{
+		for (GameObject* gameObject : gameObjects)
+		{
+			if (gameObject != nullptr && gameObject->GetName() == name)
+			{
+				return gameObject;
+			}
+		}
+
+		return nullptr;
+	}
+
 	void GameWorld::DestroyGameObjectImmediate(GameObject* gameObject)
 	{
 		auto parent = gameObject->GetComponent<TransformComponent>()->GetParent();

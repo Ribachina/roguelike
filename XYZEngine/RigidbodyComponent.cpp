@@ -10,22 +10,22 @@ namespace XYZEngine
 
 	void RigidbodyComponent::Update(float deltaTime)
 	{
-		transform->MoveBy(linearVelocity);
-		transform->RotateBy(angleVelocity);
+		transform->MoveBy(linearVelocity * deltaTime);
+		transform->RotateBy(angleVelocity * deltaTime);
 
 		linearVelocity = (1.f - linearDamping * deltaTime) * linearVelocity;
 		angleVelocity = (1.f - angleDamping * deltaTime) * angleVelocity;
 
-		if (linearVelocity.x < 0.001f)
+		if (std::abs(linearVelocity.x) < 0.001f)
 		{
 			linearVelocity = { 0.f, linearVelocity.y };
 		}
-		if (linearVelocity.y < 0.001f)
+		if (std::abs(linearVelocity.y) < 0.001f)
 		{
 			linearVelocity = { linearVelocity.x, 0.f };
 		}
 
-		if (angleVelocity < 0.001f)
+		if (std::abs(angleVelocity) < 0.001f)
 		{
 			angleVelocity = 0.f;
 		}
