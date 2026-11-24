@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ResourceSystem.h"
 #include <iostream>
+#include "Logger.h"
 
 namespace XYZEngine
 {
@@ -14,6 +15,7 @@ namespace XYZEngine
 	{
 		if (textures.find(name) != textures.end())
 		{
+			LOG_WARNING("Texture already loaded: " + name);
 			return;
 		}
 
@@ -22,6 +24,13 @@ namespace XYZEngine
 		{
 			newTexture->setSmooth(isSmooth);
 			textures.emplace(name, newTexture);
+
+			LOG_INFO("Texture loaded: " + name);
+		}
+		else
+		{
+			LOG_ERROR("Failed to load texture: " + sourcePath);
+			delete newTexture;
 		}
 	}
 	const sf::Texture* ResourceSystem::GetTextureShared(const std::string& name) const
@@ -118,6 +127,7 @@ namespace XYZEngine
 	{
 		if (soundBuffers.find(name) != soundBuffers.end())
 		{
+			LOG_WARNING("Sound already loaded: " + name);
 			return;
 		}
 
@@ -125,9 +135,12 @@ namespace XYZEngine
 		if (newSoundBuffer->loadFromFile(sourcePath))
 		{
 			soundBuffers.emplace(name, newSoundBuffer);
+
+			LOG_INFO("Sound loaded: " + name);
 		}
 		else
 		{
+			LOG_ERROR("Failed to load sound: " + sourcePath);
 			delete newSoundBuffer;
 		}
 	}
@@ -164,6 +177,7 @@ namespace XYZEngine
 	{
 		if (musics.find(name) != musics.end())
 		{
+			LOG_WARNING("Music already loaded: " + name);
 			return;
 		}
 
@@ -171,9 +185,11 @@ namespace XYZEngine
 		if (newMusic->openFromFile(sourcePath))
 		{
 			musics.emplace(name, newMusic);
+			LOG_INFO("Music loaded: " + name);
 		}
 		else
 		{
+			LOG_ERROR("Failed to load music: " + sourcePath);
 			delete newMusic;
 		}
 	}

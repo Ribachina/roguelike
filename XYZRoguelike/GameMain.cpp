@@ -6,12 +6,16 @@
 #include "DeveloperLevel.h"
 #include "GameResources.h"
 #include "MainMenuScene.h"
+#include "Logger.h"
 
 
 using namespace XYZRoguelike;
 
 int main()
 {
+	XYZEngine::SetupLogger();
+	LOG_INFO("Application started");
+	
 	XYZEngine::RenderSystem::Instance()->SetMainWindow(new sf::RenderWindow(sf::VideoMode(1280, 720), "XYZRoguelike"));
 
 	GameResources::Load();

@@ -1,0 +1,18 @@
+[INFO] Application started
+[INFO] Application started
+[INFO] Loading game resources
+[INFO] Texture loaded: ball
+[WARNING] Texture already loaded: ball
+[INFO] Sound loaded: hurt_01
+[INFO] Sound loaded: step_01
+[INFO] Music loaded: music_menu
+[INFO] Music loaded: music_game
+[INFO] Game resources loaded
+[INFO] Application started
+[INFO] Loading game resources
+[ERROR] Failed to load texture: Resources/Textures/ba56ll.png
+[INFO] Sound loaded: hurt_01
+[INFO] Sound loaded: step_01
+[INFO] Music loaded: music_menu
+[INFO] Music loaded: music_game
+[INFO] Game resources loaded
