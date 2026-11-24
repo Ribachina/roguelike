@@ -7,7 +7,8 @@
 #include "GameResources.h"
 #include "MainMenuScene.h"
 #include "Logger.h"
-
+#include <exception>
+#include <cstdlib>
 
 using namespace XYZRoguelike;
 
@@ -16,17 +17,30 @@ int main()
 	XYZEngine::SetupLogger();
 	LOG_INFO("Application started");
 	
-	XYZEngine::RenderSystem::Instance()->SetMainWindow(new sf::RenderWindow(sf::VideoMode(1280, 720), "XYZRoguelike"));
+	try
+	{
+		XYZEngine::RenderSystem::Instance()->SetMainWindow(new sf::RenderWindow(sf::VideoMode(1280, 720), "XYZRoguelike"));
 
-	GameResources::Load();
+		GameResources::Load();
 
-	auto developerLevel = std::make_shared<DeveloperLevel>();
-	auto mainMenuScene = std::make_shared<MainMenuScene>(developerLevel);
+		auto developerLevel = std::make_shared<DeveloperLevel>();
+		auto mainMenuScene = std::make_shared<MainMenuScene>(developerLevel);
 
-	mainMenuScene->Start();
-	
+		mainMenuScene->Start();
 
-	XYZEngine::Engine::Instance()->Run();
 
-	return 0;
+		XYZEngine::Engine::Instance()->Run();
+
+		return 0;
+	}
+	catch (const std::exception& exception)
+	{
+		LOG_ERROR(std::string("Fatal error: ") + exception.what());
+
+		return EXIT_FAILURE;
+	}
+
+	LOG_INFO("Application finished");
+
+	return EXIT_SUCCESS;
 }

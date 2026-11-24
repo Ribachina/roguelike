@@ -10,7 +10,7 @@ namespace XYZRoguelike
 		
 		auto resources = XYZEngine::ResourceSystem::Instance();
 
-		resources->LoadTexture("ball", "Resources/Textures/ba56ll.png");
+		resources->LoadTexture("ball", "Resources/Textures/ball.png");
 		resources->LoadSoundBuffer("hurt_01", "Resources/Sounds/hurt_01.ogg");
 		resources->LoadSoundBuffer("step_01", "Resources/Sounds/step_01.wav");
 		resources->LoadMusic("music_menu", "Resources/Musics/music_menu.ogg");

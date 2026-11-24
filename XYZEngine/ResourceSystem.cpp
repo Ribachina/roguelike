@@ -2,6 +2,7 @@
 #include "ResourceSystem.h"
 #include <iostream>
 #include "Logger.h"
+#include <stdexcept>
 
 namespace XYZEngine
 {
@@ -20,18 +21,17 @@ namespace XYZEngine
 		}
 
 		sf::Texture* newTexture = new sf::Texture();
-		if (newTexture->loadFromFile(sourcePath))
+		if (!newTexture->loadFromFile(sourcePath))
 		{
-			newTexture->setSmooth(isSmooth);
-			textures.emplace(name, newTexture);
-
-			LOG_INFO("Texture loaded: " + name);
-		}
-		else
-		{
-			LOG_ERROR("Failed to load texture: " + sourcePath);
 			delete newTexture;
+
+			throw std::runtime_error("Failed to load texture: " + sourcePath);
 		}
+		
+		newTexture->setSmooth(isSmooth);
+		textures.emplace(name, newTexture);
+
+		LOG_INFO("Texture loaded: " + name);
 	}
 	const sf::Texture* ResourceSystem::GetTextureShared(const std::string& name) const
 	{
@@ -54,25 +54,29 @@ namespace XYZEngine
 	{
 		if (textureMaps.find(name) != textureMaps.end())
 		{
+			LOG_WARNING("Texture map already loaded: " + name); // Повторная загрузка
+			
 			return;
 		}
 
 		sf::Texture textureMap;
-		if (textureMap.loadFromFile(sourcePath))
+		if (!textureMap.loadFromFile(sourcePath))
 		{
-			auto textureMapElements = new std::vector<sf::Texture*>();
+			throw std::runtime_error("Failed to load texure map: " + sourcePath); // Невозможно загрузить элемент или файл
+		}
+			
+		std::vector<sf::Texture*> textureMapElements;
+		auto textureSize = textureMap.getSize();
+		int loadedElements = 0;
 
-			auto textureSize = textureMap.getSize();
-			int loadedElements = 0;
-
-			for (int y = 0; y <= textureSize.y - elementPixelSize.y; y += elementPixelSize.y)
+			for (int y = 0; y + elementPixelSize.y <= textureSize.y; y += elementPixelSize.y)
 			{
 				if (loadedElements == totalElements)
 				{
 					break;
 				}
 
-				for (int x = 0; x <= textureSize.x - elementPixelSize.x; x += elementPixelSize.x)
+				for (int x = 0; x + elementPixelSize.x <= textureSize.x; x += elementPixelSize.x)
 				{
 					if (loadedElements == totalElements)
 					{
@@ -80,17 +84,39 @@ namespace XYZEngine
 					}
 
 					sf::Texture* newTextureMapElement = new sf::Texture();
-					if (newTextureMapElement->loadFromFile(sourcePath, sf::IntRect(x, y, elementPixelSize.x, elementPixelSize.y)))
+					if (!newTextureMapElement->loadFromFile(sourcePath, sf::IntRect(x, y, elementPixelSize.x, elementPixelSize.y)))
 					{
-						newTextureMapElement->setSmooth(isSmooth);
-						textureMapElements->push_back(newTextureMapElement);
+						delete newTextureMapElement;
+
+						for (auto* element : textureMapElements)
+						{
+							delete element;
+						}
+
+						throw std::runtime_error("Failed to load texture map element: " + sourcePath);
 					}
+					
+					newTextureMapElement->setSmooth(isSmooth);
+
+					textureMapElements.push_back(newTextureMapElement);
+					
 					loadedElements++;
 				}
 			}
 
-			textureMaps.emplace(name, *textureMapElements);
-		}
+			if (loadedElements != totalElements)
+			{
+				for (auto* element : textureMapElements)
+				{
+					delete element;
+				}
+
+				throw std::runtime_error("Texture map don't contain enough elements: " + name);
+			}
+
+			textureMaps.emplace(name, std::move(textureMapElements));
+
+			LOG_INFO("Texture map loaded: " + name + " (" + std::to_string(totalElements) + " elements)"); // Всё ок
 	}
 	const sf::Texture* ResourceSystem::GetTextureMapElementShared(const std::string& name, int elementIndex) const
 	{
@@ -132,17 +158,16 @@ namespace XYZEngine
 		}
 
 		sf::SoundBuffer* newSoundBuffer = new sf::SoundBuffer();
-		if (newSoundBuffer->loadFromFile(sourcePath))
+		if (!newSoundBuffer->loadFromFile(sourcePath))
 		{
-			soundBuffers.emplace(name, newSoundBuffer);
-
-			LOG_INFO("Sound loaded: " + name);
-		}
-		else
-		{
-			LOG_ERROR("Failed to load sound: " + sourcePath);
 			delete newSoundBuffer;
+
+			throw std::runtime_error("Failed to load sound: " + sourcePath);
 		}
+		
+		soundBuffers.emplace(name, newSoundBuffer);
+
+		LOG_INFO("Sound loaded: " + name);
 	}
 	const sf::SoundBuffer* ResourceSystem::GetSoundBufferShared(const std::string& name) const
 	{
@@ -182,16 +207,16 @@ namespace XYZEngine
 		}
 
 		sf::Music* newMusic = new sf::Music();
-		if (newMusic->openFromFile(sourcePath))
+		if (!newMusic->openFromFile(sourcePath))
 		{
-			musics.emplace(name, newMusic);
-			LOG_INFO("Music loaded: " + name);
-		}
-		else
-		{
-			LOG_ERROR("Failed to load music: " + sourcePath);
 			delete newMusic;
+
+			throw std::runtime_error("Failed to load music: " + sourcePath);
 		}
+		
+		musics.emplace(name, newMusic);
+
+		LOG_INFO("Music loaded: " + name);
 	}
 	sf::Music* ResourceSystem::GetMusic(const std::string& name)
 	{

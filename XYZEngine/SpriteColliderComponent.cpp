@@ -1,14 +1,20 @@
 #include "pch.h"
 #include "SpriteColliderComponent.h"
+#include <cassert>
+#include "Logger.h"
 
 namespace XYZEngine
 {
 	SpriteColliderComponent::SpriteColliderComponent(GameObject* gameObject) : ColliderComponent(gameObject)
 	{
 		auto spriteRenderer = gameObject->GetComponent<SpriteRendererComponent>();
+
+		assert(spriteRenderer != nullptr && "SpriteRendererComponent is required for SpriteColiderComponent"); // Обязан иметь SpriteRenderer
+
 		if (spriteRenderer == nullptr)
 		{
-			std::cout << "SpriteRenderer required to SpriteCollider." << std::endl;
+			LOG_ERROR("SpriteRendererComponent is required for SpriteColliderComponent");
+
 			gameObject->RemoveComponent(this);
 			return;
 		}

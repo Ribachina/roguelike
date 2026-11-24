@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "RigidbodyComponent.h"
+#include <cassert>
 
 namespace XYZEngine
 {
 	RigidbodyComponent::RigidbodyComponent(GameObject* gameObject) : Component(gameObject)
 	{
 		transform = gameObject->GetComponent<TransformComponent>();
+
+		assert(transform != nullptr && "TransformComponent is required for RigidbodyComponent"); // Обязан иметь Transform
 	}
 
 	void RigidbodyComponent::Update(float deltaTime)

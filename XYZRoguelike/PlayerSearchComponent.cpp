@@ -4,6 +4,7 @@
 #include "TransformComponent.h"
 #include "Vector.h"
 #include <iostream>
+#include <cassert>
 
 namespace XYZRoguelike
 {
@@ -11,6 +12,8 @@ namespace XYZRoguelike
 		: Component(gameObject)
 	{
 		transform = gameObject->GetComponent<XYZEngine::TransformComponent>();
+
+		assert(transform != nullptr && "TransformComponent is required for PlayerSearchComponent"); // Объект врага обязан иметь Transform
 	}
 
 
