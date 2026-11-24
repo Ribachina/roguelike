@@ -11,6 +11,7 @@ namespace XYZEngine
 
 namespace XYZRoguelike
 {
+	class AttackComponent;
 	
 	// Класс управления игроком
 	class PlayerControllerComponent : public XYZEngine::Component
@@ -33,5 +34,8 @@ namespace XYZRoguelike
 
 		float stepTimer = 0.f;
 		float stepInterval = 0.35f;
+
+		AttackComponent* attack = nullptr;
+		bool attackWasPressed = false;
 	};
 }

@@ -41,4 +41,8 @@ namespace XYZEngine
 	{
 		return verticalAxis;
 	}
+	bool InputComponent::IsKeyPressed(sf::Keyboard::Key key) const
+	{
+		return sf::Keyboard::isKeyPressed(key);
+	}
 }

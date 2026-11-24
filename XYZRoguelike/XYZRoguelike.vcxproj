@@ -165,12 +165,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="Bonus.cpp" />
+    <ClCompile Include="CharacterStatsComponent.cpp" />
     <ClCompile Include="DeveloperLevel.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyAttackComponent.cpp" />
     <ClCompile Include="EnemyChaseComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameResources.cpp" />
@@ -200,12 +203,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="Bonus.h" />
+    <ClInclude Include="CharacterStatsComponent.h" />
     <ClInclude Include="DeveloperLevel.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyAttackComponent.h" />
     <ClInclude Include="EnemyChaseComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameResources.h" />

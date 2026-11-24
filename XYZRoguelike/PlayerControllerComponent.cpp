@@ -5,6 +5,10 @@
 #include "AudioComponent.h"
 #include "Vector.h"
 #include "ResourceSystem.h"
+#include "AttackComponent.h"
+#include "GameWorld.h"
+#include <cassert>
+#include "Logger.h"
 
 namespace XYZRoguelike
 {
@@ -15,6 +19,9 @@ namespace XYZRoguelike
 		rigidbody = gameObject->GetComponent<XYZEngine::RigidbodyComponent>();
 		audio = gameObject->GetComponent<XYZEngine::AudioComponent>();
 		stepSound = XYZEngine::ResourceSystem::Instance()->GetSoundBufferShared("step_01");
+
+		attack = gameObject->GetComponent<AttackComponent>();
+		assert(attack != nullptr && "AttackComponent is required for PlayerControllerComponent");
 	}
 	
 	void PlayerControllerComponent::Update(float deltaTime)
@@ -46,6 +53,25 @@ namespace XYZRoguelike
 		{
 			stepTimer = 0.f;
 		}
+
+		const bool attackPressed = input->IsKeyPressed(sf::Keyboard::Space);
+		if (attackPressed && !attackWasPressed)
+		{
+			XYZEngine::GameObject* enemy = XYZEngine::GameWorld::Instance()->FindGameObject("Enemy");
+
+			if (enemy == nullptr)
+			{
+				LOG_WARNING("Enemy not founded");
+			}
+			else if (attack == nullptr)
+			{
+				LOG_ERROR("Player AttackComponent is missing");
+			}
+
+			attack->TryAttack(enemy);
+		}
+
+		attackWasPressed = attackPressed;
 	}
 	void PlayerControllerComponent::Render()
 	{

@@ -7,6 +7,7 @@
 #include "SpriteColliderComponent.h"
 #include "PlayerSearchComponent.h"
 #include "EnemyChaseComponent.h"
+#include "CharacterStatsComponent.h"
 
 namespace XYZRoguelike
 {
@@ -14,8 +15,8 @@ namespace XYZRoguelike
 		: Enemy()
 	{
 		auto renderer = gameObject->AddComponent<XYZEngine::SpriteRendererComponent>(); // Визуал крысы
-		renderer->SetTexture(*XYZEngine::ResourceSystem::Instance()->GetTextureShared("ball"));
-		renderer->SetPixelSize(24, 24);
+		renderer->SetTexture(*XYZEngine::ResourceSystem::Instance()->GetTextureShared("rat"));
+		renderer->SetPixelSize(32, 32);
 
 		auto rigidbody = gameObject->AddComponent<XYZEngine::RigidbodyComponent>(); // Тело для движения
 
@@ -25,5 +26,8 @@ namespace XYZRoguelike
 		transform->MoveBy({ 200.f, 200.f });
 
 		SetupAI(200.f, 100.f); // Радиус обнаружения и скорость
+		SetupStats(50, 5); // Здоровье и броня
+		SetupAttack(20, 40.f, 1.f); // Урон, радиуас атаки, перезарядка атаки
+		SetupEnemyAttack();
 	}
 }
